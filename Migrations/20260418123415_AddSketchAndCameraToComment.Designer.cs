@@ -3,6 +3,7 @@ using System;
 using B.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260418123415_AddSketchAndCameraToComment")]
+    partial class AddSketchAndCameraToComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -90,34 +93,6 @@ namespace B.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("B.Models.ProjectAccess", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AccessLevel")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("GrantedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("ProjectAccesses");
                 });
 
             modelBuilder.Entity("B.Models.ProjectFile", b =>
@@ -199,17 +174,6 @@ namespace B.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("B.Models.ProjectAccess", b =>
-                {
-                    b.HasOne("B.Models.Project", "Project")
-                        .WithMany("ProjectAccesses")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("B.Models.ProjectFile", b =>
                 {
                     b.HasOne("B.Models.Project", "Project")
@@ -223,8 +187,6 @@ namespace B.Migrations
 
             modelBuilder.Entity("B.Models.Project", b =>
                 {
-                    b.Navigation("ProjectAccesses");
-
                     b.Navigation("ProjectFiles");
                 });
 #pragma warning restore 612, 618
