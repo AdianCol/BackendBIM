@@ -121,8 +121,8 @@ using (var scope = app.Services.CreateScope())
 
 app.UseStaticFiles();
 app.UseRouting();
-app.UseRateLimiter();
 app.UseCors(MyAllowSpecificOrigins);
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
