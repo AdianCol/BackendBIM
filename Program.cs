@@ -100,7 +100,8 @@ builder.Services.AddSignalR();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
-builder.WebHost.UseUrls("http://localhost:5080");
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 if (app.Environment.IsDevelopment())
 {
