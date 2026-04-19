@@ -171,12 +171,11 @@ namespace B.Controllers
 
         private string GenerateJwtToken(User user)
         {
-            var secretKey = _configuration["Jwt:Secret"];
+            var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET")
+                ?? _configuration["Jwt:Secret"];
 
             if (string.IsNullOrEmpty(secretKey))
-            {
                 throw new InvalidOperationException("JWT Secret не задан в конфигурации.");
-            }
 
             var key = Encoding.UTF8.GetBytes(secretKey);
 
