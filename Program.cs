@@ -33,23 +33,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 // ── CORS ─────────────────────────────────────────────────────────────────────
-var allowedOrigins = (
-    Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")
-    ?? builder.Configuration["AllowedOrigins"]
-    ?? "http://localhost:3000"
-).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(MyAllowSpecificOrigins, policy =>
     {
-        policy.SetIsOriginAllowed(origin =>
-            {
-                if (allowedOrigins.Any(o => o == "*")) return true;
-                if (allowedOrigins.Any(o => !string.IsNullOrEmpty(o) && origin.Equals(o, StringComparison.OrdinalIgnoreCase))) return true;
-                // always allow localhost for dev
-                return origin.StartsWith("http://localhost") || origin.StartsWith("https://localhost");
-            })
+        policy.SetIsOriginAllowed(_ => true)
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();
